@@ -1,0 +1,28 @@
+echo "[v3_ca]
+subjectAltName = @alt_section
+
+[alt_section]
+IP.1 = 10.100.0.1
+IP.2 = 192.168.0.1
+DNS.1 = myserver.mydomain.com
+DNS.2 = otherserver.otherdomain.com
+email.1 = email1.example.com
+
+" > ssl-extensions-x509-f.cnf
+
+
+keytool -genkeypair -keystore serverkeystore.jks -storepass password -alias servercert -keypass password -keyalg RSA -keysize 2048 -validity 3333 -dname "CN=*.mydomain.com DC=mydomain, DC=com" -v
+
+keytool -certreq -keystore serverkeystore.jks -storepass password -alias servercert -keypass password -file serverkeystorecertreq.csr
+
+openssl req -new -x509 -keyout ca-key -out ca-cert -days 4444
+
+openssl x509 -req -CA ca-cert -CAkey ca-key -in serverkeystorecertreq.csr -out serverkeystorecertreqcert-signed -days 1111 -CAcreateserial -passin pass:password --extensions v3_ca -extfile ssl-extensions-x509-f.cnf
+
+openssl x509 -in serverkeystorecertreqcert-signed -noout -text|grep -A 1 "X509v3 Subject Alternative Name"
+
+keytool -trustcacerts -importcert -alias CARoot -keystore serverkeystore.jks -storepass password -file ca-cert -v
+
+keytool -keystore serverkeystore.jks -storepass password -alias servercert -keypass password --importcert -file serverkeystorecertreqcert-signed -v
+
+keytool -list -v -keystore serverkeystore.jks -storepass password|grep -A 7 -B 1 "SubjectAlternativeName"
