@@ -241,4 +241,4 @@ summary of commands:
 openssl pkcs12 -in serverkeystore.jks -out out.pem
 openssl pkcs12 -in out.p12 -nocerts -nodes |sed -ne '/-BEGIN PRIVATE KEY-/,/-END PRIVATE KEY-/p' > ssl.key
 openssl pkcs12 -in out.p12 -clcerts -nokeys -chain| sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > server_cert.pem
-openssl pkcs12 -in out.p12 -cacerts -chain| sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > server_cert.pem
+openssl pkcs12 -in out.p12 -cacerts -chain| sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > server_chain.pem
