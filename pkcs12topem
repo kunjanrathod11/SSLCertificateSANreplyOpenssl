@@ -155,9 +155,9 @@ ruG8ijEzgpnFTGwnmluy5maAo3aJy5y6d+YQA/nn+WHF018Cbk/hjICBdDQ1gNJq
 
 Extract Server Certificate File with/without chain, if there are just two certificates, one server and two cacert, only one will be listed
 
-openssl pkcs12 -in out.p12 -clcerts -nokeys -chain| sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > server_chain.pem
+openssl pkcs12 -in out.p12 -clcerts -nokeys -chain| sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > server_cert.pem
 
-% cat server_chain.pem
+% cat server_cert.pem
 -----BEGIN CERTIFICATE-----
 MIIDsDCCApigAwIBAgIUHhIDDbWwyzULbc4cZ57oJvlHS0UwDQYJKoZIhvcNAQEL
 BQAwRTELMAkGA1UEBhMCQVUxEzARBgNVBAgMClNvbWUtU3RhdGUxITAfBgNVBAoM
@@ -240,4 +240,5 @@ summary of commands:
 
 openssl pkcs12 -in serverkeystore.jks -out out.pem
 openssl pkcs12 -in out.p12 -nocerts -nodes |sed -ne '/-BEGIN PRIVATE KEY-/,/-END PRIVATE KEY-/p' > ssl.key
-openssl pkcs12 -in out.p12 -cacerts -chain| sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > server_chain.pem
+openssl pkcs12 -in out.p12 -clcerts -nokeys -chain| sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > server_cert.pem
+openssl pkcs12 -in out.p12 -cacerts -chain| sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > server_cert.pem
